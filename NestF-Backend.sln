@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.API", "NestF.API\NestF.API.csproj", "{F32E6F0B-567E-42E7-B74D-F9632EEAFA07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.Domain", "NestF.Domain\NestF.Domain.csproj", "{7E10FED0-B2AC-476F-B476-8A4528F6BDBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.Application", "NestF.Application\NestF.Application.csproj", "{CEF9E14C-842C-4EDE-9EBA-70791988BAEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.Infrastructure", "NestF.Infrastructure\NestF.Infrastructure.csproj", "{376B0F28-F156-4B2E-BF74-181C044F978C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F32E6F0B-567E-42E7-B74D-F9632EEAFA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32E6F0B-567E-42E7-B74D-F9632EEAFA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32E6F0B-567E-42E7-B74D-F9632EEAFA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32E6F0B-567E-42E7-B74D-F9632EEAFA07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E10FED0-B2AC-476F-B476-8A4528F6BDBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E10FED0-B2AC-476F-B476-8A4528F6BDBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E10FED0-B2AC-476F-B476-8A4528F6BDBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E10FED0-B2AC-476F-B476-8A4528F6BDBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEF9E14C-842C-4EDE-9EBA-70791988BAEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF9E14C-842C-4EDE-9EBA-70791988BAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF9E14C-842C-4EDE-9EBA-70791988BAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF9E14C-842C-4EDE-9EBA-70791988BAEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{376B0F28-F156-4B2E-BF74-181C044F978C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376B0F28-F156-4B2E-BF74-181C044F978C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376B0F28-F156-4B2E-BF74-181C044F978C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376B0F28-F156-4B2E-BF74-181C044F978C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
