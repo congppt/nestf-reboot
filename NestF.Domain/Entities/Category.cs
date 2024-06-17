@@ -1,4 +1,6 @@
-﻿namespace NestF.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NestF.Domain.Entities;
 #pragma warning disable CS8618
 public class Category
 {

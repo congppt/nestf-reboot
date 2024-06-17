@@ -1,8 +1,11 @@
-﻿namespace NestF.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace NestF.Domain.Entities;
 #pragma warning disable CS8618
 public class Product
 {
     public int Id { get; set; }
+    [Column(TypeName = "citext")]
     public string Name { get; set; }
     public decimal Price { get; set; }
     public string Description { get; set; }

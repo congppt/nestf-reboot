@@ -5,7 +5,7 @@ namespace NestF.Domain.Entities;
 public class Transaction
 {
     public int Id { get; set; }
-    public string BankTransCode { get; set; }
+    public string? BankTransCode { get; set; }
     public TransactionType Type { get; set; }
     public TransactionStatus Status { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -1,6 +1,8 @@
-﻿namespace NestF.Application.Interfaces.Services;
+﻿using NestF.Domain.Entities;
 
-public interface IProductService
+namespace NestF.Application.Interfaces.Services;
+
+public interface IProductService : IGenericService<Product>
 {
     
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using NestF.Domain.Enums;
 
 namespace NestF.Domain.Entities;
@@ -8,10 +9,12 @@ namespace NestF.Domain.Entities;
 public class Account
 {
     public int Id { get; set; }
+    [Column(TypeName = "citext")]
     public string Name { get; set; }
     public string? Phone { get; set; }
+    [Column(TypeName = "citext")]
     public string? Email { get; set; }
-    public string? Password { get; set; }
+    public string? PasswordHash { get; set; }
     public Role Role { get; set; }
     public DateTime CreatedAt { get; set; }
     public int Point { get; set; }

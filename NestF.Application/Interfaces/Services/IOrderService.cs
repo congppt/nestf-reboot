@@ -1,6 +1,8 @@
-﻿namespace NestF.Application.Interfaces.Services;
+﻿using NestF.Domain.Entities;
 
-public interface IOrderService
+namespace NestF.Application.Interfaces.Services;
+
+public interface IOrderService : IGenericService<Order>
 {
     
 }
