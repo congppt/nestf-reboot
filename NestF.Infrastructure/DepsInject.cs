@@ -1,4 +1,8 @@
 ﻿using System.Reflection;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -78,6 +82,13 @@ public static class DepsInject
                 opts.Configuration = config.GetConnectionString("Redis");
                 opts.InstanceName = "Redis cache";
             });
+            var awsOpts = new AWSOptions()
+            {
+                Credentials = new BasicAWSCredentials(config["AWS:AccessKey"], config["AWS:SecretKey"]),
+                Region = RegionEndpoint.APSoutheast1, 
+            };
+            services.AddDefaultAWSOptions(awsOpts);
+            services.AddAWSService<IAmazonS3>();
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));

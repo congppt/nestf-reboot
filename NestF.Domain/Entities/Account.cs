@@ -11,6 +11,7 @@ public class Account
     public int Id { get; set; }
     [Column(TypeName = "citext")]
     public string Name { get; set; }
+    public bool IsMale { get; set; }
     public string? Phone { get; set; }
     [Column(TypeName = "citext")]
     public string? Email { get; set; }

@@ -2,20 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using NestF.Application.Interfaces.Repositories;
+using NestF.Application.Interfaces.Services;
+using NestF.Infrastructure.Constants;
 using NestF.Infrastructure.Utils;
 
 namespace NestF.Infrastructure.Implements.Repositories;
 
 public class GenericRepo<T> : IGenericRepo<T> where T : class
 {
-    public GenericRepo(AppDbContext context, IDistributedCache cache)
+    public GenericRepo(AppDbContext context, IDistributedCache cache, ITimeService timeService)
     {
         _context = context;
         _cache = cache;
+        _timeService = timeService;
     }
 
     private readonly AppDbContext _context;
     private readonly IDistributedCache _cache;
+    private readonly ITimeService _timeService;
     public async Task<T?> GetByIdAsync(int id, CancellationToken ct = default)
     {
         var key = StringUtil.GenerateCacheKey<T>(id);
@@ -24,7 +28,11 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
         if (string.IsNullOrEmpty((cachedJson)))
         {
             item = await _context.FindAsync<T>(id);
-            if (item != null) await _cache.SetStringAsync(key, JsonSerializer.Serialize(item), ct);
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = _timeService.Now.AddMinutes(DefaultConstants.CACHE_MINUTE)
+            };
+            if (item != null) await _cache.SetStringAsync(key, JsonSerializer.Serialize(item), cacheOptions, ct);
             return item;
         }
         item = JsonSerializer.Deserialize<T>(cachedJson);

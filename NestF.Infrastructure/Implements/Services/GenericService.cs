@@ -1,4 +1,5 @@
-﻿using NestF.Application.DTOs.Generic;
+﻿using Mapster;
+using NestF.Application.DTOs.Generic;
 using NestF.Application.Interfaces.Repositories;
 using NestF.Application.Interfaces.Services;
 
@@ -27,4 +28,9 @@ public class GenericService<T> : IGenericService<T> where T : class
     //     
     //     throw new NotImplementedException();
     // }
+    public virtual async Task<TModel?> GetByIdAsync<TModel>(int id) where TModel : class
+    {
+        var item = await _uow.GetRepo<T>().GetByIdAsync(id);
+        return item.Adapt<TModel?>();
+    }
 }

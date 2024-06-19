@@ -6,6 +6,7 @@ namespace Backend_API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[TypeFilter<ExceptionFilter>]
 public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
@@ -27,7 +28,7 @@ public class AccountController : Controller
     public async Task<IActionResult> RegisterStaffAsync([FromBody] StaffRegister model)
     {
         var staff = await _accountService.RegisterStaffAsync(model);
-        return Created("/account/staff", staff);
+        return Created($"/account/staff/{staff.Id}", staff);
     }
 
     [HttpGet("customer")]
@@ -35,5 +36,26 @@ public class AccountController : Controller
     {
         var page = await _accountService.GetCustomerPageAsync(pageIndex, pageSize);
         return Ok(page);
+    }
+
+    [HttpGet("customer/{id}")]
+    public async Task<IActionResult> GetCustomerDetailAsync(int id)
+    {
+        var customer = await _accountService.GetCustomerDetailAsync(id);
+        return Ok(customer);
+    }
+
+    [HttpGet("staff/{id}")]
+    public async Task<IActionResult> GetStaffDetailAsync(int id)
+    {
+        var staff = await _accountService.GetStaffDetailAsync(id);
+        return Ok(staff);
+    }
+
+    [HttpPost("customer")]
+    public async Task<IActionResult> RegisterCustomerAsync([FromBody] CustomerRegister model)
+    {
+        var customer = await _accountService.RegisterCustomerAsync(model);
+        return Created($"account/customer/{customer.Id}", customer);
     }
 }

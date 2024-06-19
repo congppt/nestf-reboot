@@ -6,6 +6,7 @@ using NestF.Application.Interfaces.Repositories;
 using NestF.Application.Interfaces.Services;
 using NestF.Domain.Entities;
 using NestF.Domain.Enums;
+using NestF.Infrastructure.Constants;
 
 namespace NestF.Infrastructure.Implements.Services;
 
@@ -56,5 +57,35 @@ public class AccountService : GenericService<Account>, IAccountService
         if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
         await _bgService.EnqueueSendPasswordMailJobAsync(account.Id);
         return account.Adapt<StaffBasicInfo>();
+    }
+
+    public async Task<Account?> GetCustomerByPhoneAsync(string phone)
+    {
+        var customer = await _uow.GetRepo<Account>().GetAll().FirstOrDefaultAsync(a => a.Phone == phone);
+        return customer;
+    }
+
+    public async Task<CustomerBasicInfo> GetCustomerDetailAsync(int id)
+    {
+        var customer = await _uow.GetRepo<Account>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        return customer.Adapt<CustomerBasicInfo>();
+    }
+
+    public async Task<StaffBasicInfo> GetStaffDetailAsync(int id)
+    {
+        var staff = await _uow.GetRepo<Account>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        return staff.Adapt<StaffBasicInfo>();
+    }
+
+    public async Task<CustomerBasicInfo> RegisterCustomerAsync(CustomerRegister model)
+    {
+        var customer = model.Adapt<Account>();
+        customer.Phone = _claimService.GetClaim(ClaimConstants.PHONE, string.Empty);
+        customer.IsActive = true;
+        customer.Role = Role.Customer;
+        customer.CreatedAt = _timeService.Now;
+        await _uow.GetRepo<Account>().AddAsync(customer);
+        if (!await _uow.SaveChangesAsync()) throw new DbUpdateException(); 
+        return customer.Adapt<CustomerBasicInfo>();
     }
 }
