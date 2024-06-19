@@ -40,6 +40,17 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
         return item;
     }
 
+    public async Task CacheEntityAsync(int id, T entity, CancellationToken ct = default)
+    {
+        var key = StringUtil.GenerateCacheKey<T>(id);
+        var json = JsonSerializer.Serialize(entity);
+        var cacheOptions = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpiration = _timeService.Now.AddMinutes(DefaultConstants.CACHE_MINUTE)
+        };
+        await _cache.SetStringAsync(key, json, cacheOptions, ct);
+    }
+
     public IQueryable<T> GetAll()
     {
         return _context.Set<T>().AsNoTrackingWithIdentityResolution();

@@ -7,6 +7,8 @@ namespace NestF.Application.Interfaces.Services;
 public interface IProductService : IGenericService<Product>
 {
     Task<Page<ProductBasicInfo>> GetProductPageAsync(int pageIndex, int pageSize);
-    Task<ProductBasicInfo> CreateProductAsync(ProductCreate model);
-    Task<string> GetPreSignedUrlAsync();
+    Task<string> GetPreSignedUrlAsync(int productId);
+    Task<ProductBasicInfo> CreateProductAsync();
+    Task<ProductBasicInfo> UpdateProductAsync(int productId, ProductUpdate model);
+    Task AddProductImageAsync(string imageName);
 }

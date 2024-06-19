@@ -5,7 +5,7 @@ using NestF.Application.Interfaces.Services;
 namespace Backend_API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("accounts")]
 [TypeFilter<ExceptionFilter>]
 public class AccountController : Controller
 {
@@ -17,7 +17,7 @@ public class AccountController : Controller
     }
 
     // GET
-    [HttpGet("staff")]
+    [HttpGet("staffs")]
     public async Task<IActionResult> GetStaffPageAsync(int pageIndex = 0, int pageSize = 10)
     {
         var page = await _accountService.GetStaffPageAsync(pageIndex, pageSize);
@@ -31,21 +31,21 @@ public class AccountController : Controller
         return Created($"/account/staff/{staff.Id}", staff);
     }
 
-    [HttpGet("customer")]
+    [HttpGet("customers")]
     public async Task<IActionResult> GetCustomerPageAsync(int pageIndex = 0, int pageSize = 10)
     {
         var page = await _accountService.GetCustomerPageAsync(pageIndex, pageSize);
         return Ok(page);
     }
 
-    [HttpGet("customer/{id}")]
+    [HttpGet("customers/{id}")]
     public async Task<IActionResult> GetCustomerDetailAsync(int id)
     {
         var customer = await _accountService.GetCustomerDetailAsync(id);
         return Ok(customer);
     }
 
-    [HttpGet("staff/{id}")]
+    [HttpGet("staffs/{id}")]
     public async Task<IActionResult> GetStaffDetailAsync(int id)
     {
         var staff = await _accountService.GetStaffDetailAsync(id);

@@ -7,7 +7,9 @@ public class BackgroundConstants
     public const int RETRY_SECOND_MULTYPLY = 15;
     //job data map keys
     public const string ACCOUNT_ID_KEY = "account_id";
+    public const string PRODUCT_ID_KEY = "product_id";
     //job groups
     public const string ACCOUNT_GRP = "ACCOUNT";
-    
+    public const string PRODUCT_GRP = "PRODUCT";
+
 }

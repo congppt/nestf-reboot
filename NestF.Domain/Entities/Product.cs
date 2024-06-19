@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using NestF.Domain.Enums;
 
 namespace NestF.Domain.Entities;
 #pragma warning disable CS8618
@@ -14,6 +15,7 @@ public class Product
     public List<string> ImgPaths { get; set; }
     public int CategoryId { get; set; }
     public Category Category { get; set; }
+    public ProductStatus Status { get; set; }
     public HashSet<OrderDetail> OrderDetails { get; set; }
     
 }

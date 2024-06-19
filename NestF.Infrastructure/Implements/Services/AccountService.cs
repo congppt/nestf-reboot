@@ -85,7 +85,7 @@ public class AccountService : GenericService<Account>, IAccountService
         customer.Role = Role.Customer;
         customer.CreatedAt = _timeService.Now;
         await _uow.GetRepo<Account>().AddAsync(customer);
-        if (!await _uow.SaveChangesAsync()) throw new DbUpdateException(); 
+        if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
         return customer.Adapt<CustomerBasicInfo>();
     }
 }
