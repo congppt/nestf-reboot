@@ -10,5 +10,5 @@ public interface IProductService : IGenericService<Product>
     Task<string> GetPreSignedUrlAsync(int productId);
     Task<ProductBasicInfo> CreateProductAsync();
     Task<ProductBasicInfo> UpdateProductAsync(int productId, ProductUpdate model);
-    Task AddProductImageAsync(string imageName);
+    Task AddProductImageAsync(int id, string imagePath);
 }

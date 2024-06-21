@@ -15,8 +15,6 @@ using NestF.Infrastructure.Implements.Services;
 using Npgsql;
 using Quartz;
 using Quartz.Impl.AdoJobStore;
-using StackExchange.Redis;
-
 namespace NestF.Infrastructure;
 
 public static class DepsInject

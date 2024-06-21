@@ -8,4 +8,5 @@ public class DefaultConstants
     public const int PRESIGNED_MINUTE= 15;
     public const string PRODUCT_NAME = "TEMP";
     public const int TOKEN_MINUTE = 60;
+    public const string PRODUCT_IMG_FOLDER = "product-images";
 }

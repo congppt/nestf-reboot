@@ -19,6 +19,9 @@ public class ExceptionFilter : IExceptionFilter
             case var t when t == typeof(DbUpdateException):
                 context.Result = new UnprocessableEntityResult();
                 return;
+            case var t when t == typeof(ArgumentException):
+                context.Result = new BadRequestResult();
+                return;
         }
     }
 }

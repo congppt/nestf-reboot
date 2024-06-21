@@ -36,4 +36,10 @@ public class ProductController : Controller
         var product = await _productService.UpdateProductAsync(id, model);
         return Ok(product);
     }
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> AddProductImageAsync(int id, [FromBody] string imagePath)
+    {
+        return Ok();
+    }
 }
