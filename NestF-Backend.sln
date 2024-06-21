@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.Application", "NestF.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.Infrastructure", "NestF.Infrastructure\NestF.Infrastructure.csproj", "{376B0F28-F156-4B2E-BF74-181C044F978C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NestF.S3ImageHandler", "NestF.S3ImageHandler\src\NestF.S3ImageHandler\NestF.S3ImageHandler.csproj", "{90FD741D-BF6E-4DBF-9EDD-3BC622E07B92}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{376B0F28-F156-4B2E-BF74-181C044F978C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{376B0F28-F156-4B2E-BF74-181C044F978C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{376B0F28-F156-4B2E-BF74-181C044F978C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{90FD741D-BF6E-4DBF-9EDD-3BC622E07B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90FD741D-BF6E-4DBF-9EDD-3BC622E07B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90FD741D-BF6E-4DBF-9EDD-3BC622E07B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90FD741D-BF6E-4DBF-9EDD-3BC622E07B92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
