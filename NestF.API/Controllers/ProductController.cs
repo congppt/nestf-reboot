@@ -40,6 +40,7 @@ public class ProductController : Controller
     [HttpPatch("{id}")]
     public async Task<IActionResult> AddProductImageAsync(int id, [FromBody] string imagePath)
     {
+        await _productService.AddProductImageAsync(id, imagePath);
         return Ok();
     }
 }

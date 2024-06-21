@@ -1,5 +1,5 @@
 ﻿namespace NestF.Application.DTOs.Generic;
-
+#pragma warning disable CS8618
 public class Page<T> where T : class
 {
     public List<T> Items { get; set; }
