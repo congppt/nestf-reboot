@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Amazon;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
 using Amazon.S3;
@@ -17,7 +18,7 @@ public class Function
     
     public Function()
     {
-        S3Client = new AmazonS3Client();
+        S3Client = new AmazonS3Client(RegionEndpoint.APSoutheast1);
     }
     
     public Function(IAmazonS3 s3Client)
@@ -39,7 +40,8 @@ public class Function
             try
             {
                 var response = await this.S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
-                context.Logger.LogInformation(response.Headers.ContentType); ;
+                context.Logger.LogInformation(response.Headers.ContentType);
+                context.Logger.LogInformation(s3Event.Object.Key + "hit lambda");
                 await SendWebhookEvent(s3Event.Object.Key);
             }
             catch (Exception e)
@@ -55,7 +57,7 @@ public class Function
 
     public async Task SendWebhookEvent(string imagePath)
     {
-        var parameters = imagePath.Split("/_");
+        var parameters = imagePath.Split(['/', '_']);
         var uri = string.Empty;
         var id = int.Parse(parameters[1]);
         switch (parameters[0])
