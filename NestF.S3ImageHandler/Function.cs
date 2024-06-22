@@ -69,7 +69,7 @@ public class Function
         var payload = JsonSerializer.Serialize(new { imagePath });
         var client = new HttpClient();
         client.BaseAddress = new Uri(Constants.HOST);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
+        //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "");
         var content = new StringContent(payload, Encoding.UTF8, "application/json");
         var response = await client.PatchAsync(uri, content);
         response.EnsureSuccessStatusCode();

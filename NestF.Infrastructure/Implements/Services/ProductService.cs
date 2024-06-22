@@ -89,7 +89,7 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task AddProductImageAsync(int id, string imagePath)
     {
-        var parameters = imagePath.Split("/_");
+        var parameters = imagePath.Split(['/', '_']);
         if (parameters[0] != DefaultConstants.PRODUCT_IMG_FOLDER) throw new ArgumentException();
         if (parameters[1] != id.ToString()) throw new ArgumentException();
         var product = await _uow.GetRepo<Product>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
