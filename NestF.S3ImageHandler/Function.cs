@@ -39,7 +39,7 @@ public class Function
 
             try
             {
-                var response = await this.S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
+                var response = await S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
                 context.Logger.LogInformation(response.Headers.ContentType);
                 context.Logger.LogInformation(s3Event.Object.Key + "hit lambda");
                 await SendWebhookEvent(s3Event.Object.Key);
@@ -58,12 +58,12 @@ public class Function
     public async Task SendWebhookEvent(string imagePath)
     {
         var parameters = imagePath.Split(['/', '_']);
-        var uri = string.Empty;
+        var uri = Constants.HOST;
         var id = int.Parse(parameters[1]);
         switch (parameters[0])
         {
             case Constants.PRODUCT_IMG_FOLDER:
-                uri = $"api/products/{id}";
+                uri += $"api/products/{id}";
                 break;
         }
         var payload = JsonSerializer.Serialize(new { imagePath });
@@ -79,5 +79,5 @@ public class Function
 class Constants
 {
     public const string PRODUCT_IMG_FOLDER = "product-images";
-    public const string HOST = "nest-f-f8fbc9gbf2g5dteu.southeastasia-01.azurewebsites.net";
+    public const string HOST = "https://nest-f-f8fbc9gbf2g5dteu.southeastasia-01.azurewebsites.net/";
 }
