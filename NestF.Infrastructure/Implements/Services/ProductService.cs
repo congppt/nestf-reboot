@@ -98,4 +98,12 @@ public class ProductService : GenericService<Product>, IProductService
         if (!await _uow.SaveChangesAsync()) return;
         await _uow.ProductRepo.CacheEntityAsync(id, product);
     }
+
+    public async Task<ProductDetailInfo> GetProductDetailAsync(int id)
+    {
+        var product = await _uow.ProductRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var role = _claimService.GetClaim(ClaimConstants.ROLE, Role.Customer);
+        if (product.Status != ProductStatus.Available && role == Role.Customer) throw new KeyNotFoundException();
+        return product.Adapt<ProductDetailInfo>();
+    }
 }

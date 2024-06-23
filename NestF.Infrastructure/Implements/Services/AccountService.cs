@@ -61,19 +61,18 @@ public class AccountService : GenericService<Account>, IAccountService
 
     public async Task<Account?> GetCustomerByPhoneAsync(string phone)
     {
-        var customer = await _uow.AccountRepo.GetAll().FirstOrDefaultAsync(a => a.Phone == phone);
-        return customer;
+        return await _uow.AccountRepo.GetCustomerByPhoneAsync(phone);
     }
 
     public async Task<CustomerBasicInfo> GetCustomerDetailAsync(int id)
     {
-        var customer = await _uow.AccountRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var customer = await _uow.AccountRepo.GetCustomerByIdAsync(id) ?? throw new KeyNotFoundException();
         return customer.Adapt<CustomerBasicInfo>();
     }
 
     public async Task<StaffBasicInfo> GetStaffDetailAsync(int id)
     {
-        var staff = await _uow.AccountRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var staff = await _uow.AccountRepo.GetStaffByIdAsync(id) ?? throw new KeyNotFoundException();
         return staff.Adapt<StaffBasicInfo>();
     }
 

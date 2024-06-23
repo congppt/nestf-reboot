@@ -11,4 +11,5 @@ public interface IProductService : IGenericService<Product>
     Task<ProductBasicInfo> CreateProductAsync();
     Task<ProductBasicInfo> UpdateProductAsync(int productId, ProductUpdate model);
     Task AddProductImageAsync(int id, string imagePath);
+    Task<ProductDetailInfo> GetProductDetailAsync(int id);
 }

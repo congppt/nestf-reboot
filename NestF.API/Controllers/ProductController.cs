@@ -2,7 +2,6 @@
 using NestF.Application.DTOs.Generic;
 using NestF.Application.DTOs.Product;
 using NestF.Application.Interfaces.Services;
-using NestF.Domain.Entities;
 
 namespace Backend_API.Controllers;
 
@@ -49,5 +48,12 @@ public class ProductController : Controller
     {
         await _productService.AddProductImageAsync(id, model.ImagePath);
         return Ok();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductDetailAsync(int id)
+    {
+        var product = await _productService.GetProductDetailAsync(id);
+        return Ok(product);
     }
 }
