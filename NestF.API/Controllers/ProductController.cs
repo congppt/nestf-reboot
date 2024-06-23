@@ -17,7 +17,13 @@ public class ProductController : Controller
     {
         _productService = productService;
     }
-    
+
+    [HttpGet]
+    public async Task<IActionResult> GetProductPageAsync(int pageIndex = 0, int pageSize = 10)
+    {
+        var page = await _productService.GetProductPageAsync(pageIndex, pageSize);
+        return Ok(page);
+    }
     [HttpPost("{id}/image-upload")]
     public async Task<IActionResult> GetProductPreSignedUrlAsync(int id)
     {

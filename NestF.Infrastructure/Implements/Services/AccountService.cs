@@ -21,29 +21,29 @@ public class AccountService : GenericService<Account>, IAccountService
 
     public async Task<Page<CustomerBasicInfo>> GetCustomerPageAsync(int pageIndex, int pageSize)
     {
-        var source = _uow.GetRepo<Account>().GetAll().Where(a => a.Role == Role.Customer);
+        var source = _uow.AccountRepo.GetCustomers();
         var count = await source.CountAsync();
         var items = await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
-        return new Page<CustomerBasicInfo>()
+        return new()
         {
+            TotalCount = count,
             Items = items.Adapt<List<CustomerBasicInfo>>(),
             PageIndex = pageIndex,
-            PageSize = pageSize,
-            TotalCount = count
+            PageSize = pageSize
         };
     }
 
     public async Task<Page<StaffBasicInfo>> GetStaffPageAsync(int pageIndex, int pageSize)
     {
-        var source = _uow.GetRepo<Account>().GetAll().Where(a => a.Role == Role.Staff);
+        var source = _uow.AccountRepo.GetStaffs();
         var count = await source.CountAsync();
         var items = await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
-        return new Page<StaffBasicInfo>()
+        return new ()
         {
+            TotalCount = count,
             Items = items.Adapt<List<StaffBasicInfo>>(),
             PageIndex = pageIndex,
-            PageSize = pageSize,
-            TotalCount = count
+            PageSize = pageSize
         };
     }
 
@@ -53,7 +53,7 @@ public class AccountService : GenericService<Account>, IAccountService
         account.CreatedAt = _timeService.Now;
         account.Role = Role.Staff;
         account.IsActive = true;
-        await _uow.GetRepo<Account>().AddAsync(account);
+        await _uow.AccountRepo.AddAsync(account);
         if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
         await _bgService.EnqueueSendPasswordMailJobAsync(account.Id);
         return account.Adapt<StaffBasicInfo>();
@@ -61,19 +61,19 @@ public class AccountService : GenericService<Account>, IAccountService
 
     public async Task<Account?> GetCustomerByPhoneAsync(string phone)
     {
-        var customer = await _uow.GetRepo<Account>().GetAll().FirstOrDefaultAsync(a => a.Phone == phone);
+        var customer = await _uow.AccountRepo.GetAll().FirstOrDefaultAsync(a => a.Phone == phone);
         return customer;
     }
 
     public async Task<CustomerBasicInfo> GetCustomerDetailAsync(int id)
     {
-        var customer = await _uow.GetRepo<Account>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var customer = await _uow.AccountRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
         return customer.Adapt<CustomerBasicInfo>();
     }
 
     public async Task<StaffBasicInfo> GetStaffDetailAsync(int id)
     {
-        var staff = await _uow.GetRepo<Account>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var staff = await _uow.AccountRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
         return staff.Adapt<StaffBasicInfo>();
     }
 
@@ -84,7 +84,7 @@ public class AccountService : GenericService<Account>, IAccountService
         customer.IsActive = true;
         customer.Role = Role.Customer;
         customer.CreatedAt = _timeService.Now;
-        await _uow.GetRepo<Account>().AddAsync(customer);
+        await _uow.AccountRepo.AddAsync(customer);
         if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
         return customer.Adapt<CustomerBasicInfo>();
     }

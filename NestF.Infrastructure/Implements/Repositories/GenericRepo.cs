@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using NestF.Application.DTOs.Generic;
 using NestF.Application.Interfaces.Repositories;
 using NestF.Application.Interfaces.Services;
 using NestF.Infrastructure.Constants;
@@ -17,9 +19,9 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
         _timeService = timeService;
     }
 
-    private readonly AppDbContext _context;
-    private readonly IDistributedCache _cache;
-    private readonly ITimeService _timeService;
+    protected readonly AppDbContext _context;
+    protected readonly IDistributedCache _cache;
+    protected readonly ITimeService _timeService;
     public async Task<T?> GetByIdAsync(int id, CancellationToken ct = default)
     {
         var key = StringUtil.GenerateCacheKey<T>(id);
@@ -55,6 +57,20 @@ public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         return _context.Set<T>().AsNoTrackingWithIdentityResolution();
     }
+
+    // public virtual async Task<Page<TModel>> GetPageAsync<TModel>(int pageIndex, int pageSize) where TModel : class
+    // {
+    //     var source = _context.Set<T>();
+    //     var count = await source.CountAsync();
+    //     var items = await _context.Set<T>().Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+    //     return new Page<TModel>
+    //     {
+    //         TotalCount = count,
+    //         Items = items.Adapt<List<TModel>>(),
+    //         PageIndex = pageIndex,
+    //         PageSize = pageSize
+    //     };
+    // }
 
     public async Task AddAsync(T entity, CancellationToken ct = default)
     {

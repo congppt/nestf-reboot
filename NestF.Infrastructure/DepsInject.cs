@@ -88,6 +88,10 @@ public static class DepsInject
             services.AddDefaultAWSOptions(awsOpts);
             services.AddAWSService<IAmazonS3>();
             services.AddScoped(typeof(IGenericRepo<>), typeof(GenericRepo<>));
+            services.AddScoped<IAccountRepo, AccountRepo>();
+            services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
+            services.AddScoped<IOrderRepo, OrderRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped<IBackgroundService, QuartzBackgroundService>();
