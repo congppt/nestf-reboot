@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NestF.Application.DTOs.Generic;
 using NestF.Application.DTOs.Product;
 using NestF.Application.Interfaces.Services;
 using NestF.Domain.Entities;
@@ -38,9 +39,9 @@ public class ProductController : Controller
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> AddProductImageAsync(int id, [FromBody] string imagePath)
+    public async Task<IActionResult> AddProductImageAsync(int id, [FromBody] ImageWebhook model)
     {
-        await _productService.AddProductImageAsync(id, imagePath);
+        await _productService.AddProductImageAsync(id, model.ImagePath);
         return Ok();
     }
 }
