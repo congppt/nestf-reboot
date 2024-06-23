@@ -50,6 +50,6 @@ public static class StringUtil
 
     public static string GenerateCacheKey<T>(int id) where T : class
     {
-        return $"{nameof(T)}_{id}";
+        return $"{typeof(T)}_{id}";
     }
 }

@@ -7,12 +7,26 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly IServiceProvider _services;
     private readonly AppDbContext _context;
+    private readonly IAccountRepo _accountRepo;
+    private readonly IProductRepo _productRepo;
+    private readonly IOrderRepo _orderRepo;
+    private readonly ICategoryRepo _categoryRepo;
 
-    public UnitOfWork(IServiceProvider services, AppDbContext context)
+    public UnitOfWork(IServiceProvider services, AppDbContext context, ICategoryRepo categoryRepo, IOrderRepo orderRepo,
+        IProductRepo productRepo, IAccountRepo accountRepo)
     {
         _services = services;
         _context = context;
+        _categoryRepo = categoryRepo;
+        _orderRepo = orderRepo;
+        _productRepo = productRepo;
+        _accountRepo = accountRepo;
     }
+
+    public IAccountRepo AccountRepo => _accountRepo;
+    public IProductRepo ProductRepo => _productRepo;
+    public IOrderRepo OrderRepo => _orderRepo;
+    public ICategoryRepo CategoryRepo => _categoryRepo;
 
     public IGenericRepo<T> GetRepo<T>() where T : class
     {

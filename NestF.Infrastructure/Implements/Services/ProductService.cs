@@ -31,10 +31,11 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task<Page<ProductBasicInfo>> GetProductPageAsync(int pageIndex, int pageSize)
     {
-        var source = _uow.GetRepo<Product>().GetAll();
+        var role = _claimService.GetClaim(ClaimConstants.ROLE, Role.Customer);
+        var source = _uow.ProductRepo.GetProducts(role != Role.Customer);
         var count = await source.CountAsync();
         var items = await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
-        return new Page<ProductBasicInfo>()
+        return new ()
         {
             Items = items.Adapt<List<ProductBasicInfo>>(),
             PageIndex = pageIndex,
@@ -70,7 +71,7 @@ public class ProductService : GenericService<Product>, IProductService
             ImgPaths = [],
             CategoryId = 1
         };
-        await _uow.GetRepo<Product>().AddAsync(product);
+        await _uow.ProductRepo.AddAsync(product);
         if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
         await _bgService.ScheduleDeleteTempProductJobAsync(product.Id,
             _timeService.Now.AddMinutes(DefaultConstants.TOKEN_MINUTE));
@@ -79,11 +80,11 @@ public class ProductService : GenericService<Product>, IProductService
 
     public async Task<ProductBasicInfo> UpdateProductAsync(int productId, ProductUpdate model)
     {
-        var product = await _uow.GetRepo<Product>().GetByIdAsync(productId) ?? throw new KeyNotFoundException();
+        var product = await _uow.ProductRepo.GetByIdAsync(productId) ?? throw new KeyNotFoundException();
         model.Adapt(product);
         product.Status = model.IsAvailable ? ProductStatus.Available : ProductStatus.Hidden;
         if (!await _uow.SaveChangesAsync()) throw new DbUpdateException();
-        await _uow.GetRepo<Product>().CacheEntityAsync(product.Id, product);
+        await _uow.ProductRepo.CacheEntityAsync(product.Id, product);
         return product.Adapt<ProductBasicInfo>();
     }
 
@@ -92,9 +93,17 @@ public class ProductService : GenericService<Product>, IProductService
         var parameters = imagePath.Split(['/', '_']);
         if (parameters[0] != DefaultConstants.PRODUCT_IMG_FOLDER) throw new ArgumentException();
         if (parameters[1] != id.ToString()) throw new ArgumentException();
-        var product = await _uow.GetRepo<Product>().GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var product = await _uow.ProductRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
         product.ImgPaths.Add(imagePath);
         if (!await _uow.SaveChangesAsync()) return;
-        await _uow.GetRepo<Product>().CacheEntityAsync(id, product);
+        await _uow.ProductRepo.CacheEntityAsync(id, product);
+    }
+
+    public async Task<ProductDetailInfo> GetProductDetailAsync(int id)
+    {
+        var product = await _uow.ProductRepo.GetByIdAsync(id) ?? throw new KeyNotFoundException();
+        var role = _claimService.GetClaim(ClaimConstants.ROLE, Role.Customer);
+        if (product.Status != ProductStatus.Available && role == Role.Customer) throw new KeyNotFoundException();
+        return product.Adapt<ProductDetailInfo>();
     }
 }

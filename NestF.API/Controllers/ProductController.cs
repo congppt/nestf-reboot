@@ -2,7 +2,6 @@
 using NestF.Application.DTOs.Generic;
 using NestF.Application.DTOs.Product;
 using NestF.Application.Interfaces.Services;
-using NestF.Domain.Entities;
 
 namespace Backend_API.Controllers;
 
@@ -17,7 +16,13 @@ public class ProductController : Controller
     {
         _productService = productService;
     }
-    
+
+    [HttpGet]
+    public async Task<IActionResult> GetProductPageAsync(int pageIndex = 0, int pageSize = 10)
+    {
+        var page = await _productService.GetProductPageAsync(pageIndex, pageSize);
+        return Ok(page);
+    }
     [HttpPost("{id}/image-upload")]
     public async Task<IActionResult> GetProductPreSignedUrlAsync(int id)
     {
@@ -43,5 +48,12 @@ public class ProductController : Controller
     {
         await _productService.AddProductImageAsync(id, model.ImagePath);
         return Ok();
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProductDetailAsync(int id)
+    {
+        var product = await _productService.GetProductDetailAsync(id);
+        return Ok(product);
     }
 }
