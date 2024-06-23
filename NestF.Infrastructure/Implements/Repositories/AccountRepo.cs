@@ -15,12 +15,14 @@ public class AccountRepo : GenericRepo<Account>, IAccountRepo
 
     public IQueryable<Account> GetCustomers()
     {
-        return context.Accounts.Where(a => a.Role == Role.Customer).OrderByDescending(a => a.Id);
+        return context.Accounts.AsNoTrackingWithIdentityResolution().Where(a => a.Role == Role.Customer)
+            .OrderByDescending(a => a.Id);
     }
 
     public IQueryable<Account> GetStaffs()
     {
-        return context.Accounts.Where(a => a.Role == Role.Staff).OrderByDescending(a => a.Id);
+        return context.Accounts.AsNoTrackingWithIdentityResolution().Where(a => a.Role == Role.Staff)
+            .OrderByDescending(a => a.Id);
     }
 
     public async Task<Account?> GetCustomerByIdAsync(int id, CancellationToken ct = default)

@@ -17,6 +17,7 @@ public class ProductRepo : GenericRepo<Product>, IProductRepo
     public IQueryable<Product> GetProducts(bool includeUnavailable)
     {
         var source = context.Products
+            .AsNoTrackingWithIdentityResolution()
             .OrderByDescending(p => p.Id);
         return includeUnavailable ? source : source.Where(p => p.Status == ProductStatus.Available);
     }
