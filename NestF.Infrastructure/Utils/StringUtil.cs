@@ -36,14 +36,13 @@ public static class StringUtil
         }
         return stringBuilder.ToString().ToLower();
     }
-    public static string GenerateRandomPassword(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    public static string GeneratePassword(int length, string source)
+    { ;
         var random = new Random();
         var password = new StringBuilder();
         for (var i = 0; i < length; i++)
         {
-            password.Append(chars[random.Next(chars.Length)]);
+            password.Append(source[random.Next(source.Length)]);
         }
         return password.ToString();
     }

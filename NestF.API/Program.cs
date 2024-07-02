@@ -1,4 +1,5 @@
 using Backend_API;
+using Microsoft.OpenApi.Models;
 using NestF.Infrastructure;
 using SilkierQuartz;
 
@@ -22,7 +23,28 @@ builder.Services.AddInfra(builder.Configuration);
 builder.Services.AddWebService(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(swg =>
+{
+    swg.AddSecurityDefinition("Bearer", new()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header
+    });
+    swg.AddSecurityRequirement(new() {
+        {
+            new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 var app = builder.Build();
 

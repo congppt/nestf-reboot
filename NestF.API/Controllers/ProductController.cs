@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NestF.Application.DTOs.Generic;
 using NestF.Application.DTOs.Product;
 using NestF.Application.Interfaces.Services;
+using NestF.Domain.Enums;
 
 namespace Backend_API.Controllers;
 
@@ -24,12 +26,14 @@ public class ProductController : Controller
         return Ok(page);
     }
     [HttpPost("{id}/image-upload")]
+    [Authorize(Roles = $"{nameof(Role.Staff)}")]
     public async Task<IActionResult> GetProductPreSignedUrlAsync(int id)
     {
         return Ok(await _productService.GetPreSignedUrlAsync(id));
     }
 
     [HttpGet("new")]
+    [Authorize(Roles = $"{nameof(Role.Staff)}")]
     public async Task<IActionResult> CreateProductAsync()
     {
         var product = await _productService.CreateProductAsync();
@@ -37,6 +41,7 @@ public class ProductController : Controller
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = $"{nameof(Role.Staff)}")]
     public async Task<IActionResult> UpdateProductAsync(int id, [FromBody] ProductUpdate model)
     {
         var product = await _productService.UpdateProductAsync(id, model);

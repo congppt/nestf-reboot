@@ -9,18 +9,21 @@ namespace NestF.Infrastructure.Implements.Repositories;
 
 public class AccountRepo : GenericRepo<Account>, IAccountRepo
 {
-    public AccountRepo(AppDbContext context, IDistributedCache cache, ITimeService timeService) : base(context, cache, timeService)
+    public AccountRepo(AppDbContext context, IDistributedCache cache, ITimeService timeService) : base(context, cache,
+        timeService)
     {
     }
 
     public IQueryable<Account> GetCustomers()
     {
-        return context.Accounts.Where(a => a.Role == Role.Customer).OrderByDescending(a => a.Id);
+        return context.Accounts.AsNoTrackingWithIdentityResolution().Where(a => a.Role == Role.Customer)
+            .OrderByDescending(a => a.Id);
     }
 
     public IQueryable<Account> GetStaffs()
     {
-        return context.Accounts.Where(a => a.Role == Role.Staff).OrderByDescending(a => a.Id);
+        return context.Accounts.AsNoTrackingWithIdentityResolution().Where(a => a.Role == Role.Staff)
+            .OrderByDescending(a => a.Id);
     }
 
     public async Task<Account?> GetCustomerByIdAsync(int id, CancellationToken ct = default)
@@ -37,6 +40,13 @@ public class AccountRepo : GenericRepo<Account>, IAccountRepo
 
     public async Task<Account?> GetCustomerByPhoneAsync(string phone, CancellationToken ct = default)
     {
-        return await context.Accounts.FirstOrDefaultAsync(a => a.Phone == phone, ct);
+        return await context.Accounts.AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(a => a.Phone == phone, ct);
+    }
+
+    public async Task<Account?> GetStaffByEmailAsync(string email, CancellationToken ct = default)
+    {
+        return await context.Accounts.AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(a => a.Email == email);
     }
 }
