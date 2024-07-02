@@ -9,7 +9,8 @@ namespace NestF.Infrastructure.Implements.Repositories;
 
 public class AccountRepo : GenericRepo<Account>, IAccountRepo
 {
-    public AccountRepo(AppDbContext context, IDistributedCache cache, ITimeService timeService) : base(context, cache, timeService)
+    public AccountRepo(AppDbContext context, IDistributedCache cache, ITimeService timeService) : base(context, cache,
+        timeService)
     {
     }
 
@@ -39,6 +40,13 @@ public class AccountRepo : GenericRepo<Account>, IAccountRepo
 
     public async Task<Account?> GetCustomerByPhoneAsync(string phone, CancellationToken ct = default)
     {
-        return await context.Accounts.FirstOrDefaultAsync(a => a.Phone == phone, ct);
+        return await context.Accounts.AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(a => a.Phone == phone, ct);
+    }
+
+    public async Task<Account?> GetStaffByEmailAsync(string email, CancellationToken ct = default)
+    {
+        return await context.Accounts.AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(a => a.Email == email);
     }
 }

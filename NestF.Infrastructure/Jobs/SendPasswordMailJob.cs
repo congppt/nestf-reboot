@@ -26,17 +26,17 @@ public class SendPasswordMailJob : IJob
         var accountId = context.MergedJobDataMap.GetInt(BackgroundConstants.ACCOUNT_ID_KEY);
         var account = await _uow.GetRepo<Account>().GetByIdAsync(accountId);
         if (account == null || account.Email == null) return;
-        const string password = "123123123";
+        var password = StringUtil.GeneratePassword(DefaultConstants.PASSWORD_LENGTH, DefaultConstants.PASSWORD_CHARS);
         account.PasswordHash = password.Hash();
         if (await _uow.SaveChangesAsync())
         {
-            var mailBody = GeneratePasswordMailBody(account.Name, password);
+            var mailBody = GeneratePasswordMailBody(password);
             Email email = new([account.Email], "Tài khoản đăng nhập", mailBody);
             await SendMailAsync(email, new CancellationToken());
         }
     }
 
-    private string GeneratePasswordMailBody(string name, string password)
+    private string GeneratePasswordMailBody(string password)
     {
         var body = $"Mật khẩu của bạn là {password}";
         // string templatePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,

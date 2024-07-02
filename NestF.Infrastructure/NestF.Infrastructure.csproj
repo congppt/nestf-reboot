@@ -24,6 +24,7 @@
       <PackageReference Include="Mapster" Version="7.4.1-pre01" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
       <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.6" />
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.6.2" />
       <PackageReference Include="Npgsql" Version="8.0.3" />
       <PackageReference Include="Quartz.Extensions.DependencyInjection" Version="3.9.0" />
       <PackageReference Include="Quartz.Serialization.Json" Version="3.9.0" />

@@ -19,14 +19,14 @@ public class OrderService : GenericService<Order>, IOrderService
 
     public async Task<Page<OrderBasicInfo>> GetOrderPageAsync(int pageIndex, int pageSize, OrderStatus? status)
     {
-        var role = _claimService.GetClaim(ClaimConstants.ROLE, Role.Customer);
+        var role = claimService.GetClaim(ClaimConstants.ROLE, Role.Customer);
         IQueryable<Order> source;
         if (role == Role.Customer)
         {
-            var accountId = _claimService.GetClaim(ClaimConstants.ID, -1);
-            source = _uow.OrderRepo.GetOrders(accountId, status);
+            var accountId = claimService.GetClaim(ClaimConstants.ID, -1);
+            source = uow.OrderRepo.GetOrders(accountId, status);
         }
-        else source = _uow.OrderRepo.GetOrders(null, status);
+        else source = uow.OrderRepo.GetOrders(null, status);
 
         var count = await source.CountAsync();
         var items = await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
@@ -38,5 +38,20 @@ public class OrderService : GenericService<Order>, IOrderService
             PageSize = pageSize
         };
 
+    }
+
+    public async Task<Page<OrderDetailBasicInfo>> GetCartPageAsync(int pageIndex, int pageSize)
+    {
+        var accountId = claimService.GetClaim(ClaimConstants.ID, -1);
+        var source = uow.OrderDetailRepo.GetCart(accountId);
+        var count = await source.CountAsync();
+        var items = await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+        return new()
+        {
+            TotalCount = count,
+            Items = items.Adapt<List<OrderDetailBasicInfo>>(),
+            PageIndex = pageIndex,
+            PageSize = pageSize
+        };
     }
 }

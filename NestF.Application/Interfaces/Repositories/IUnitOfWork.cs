@@ -6,6 +6,7 @@ public interface IUnitOfWork
     IProductRepo ProductRepo { get; }
     IOrderRepo OrderRepo { get; }
     ICategoryRepo CategoryRepo { get; }
+    IOrderDetailRepo OrderDetailRepo { get; }
     IGenericRepo<T> GetRepo<T>() where T : class;
     Task<bool> SaveChangesAsync();
 }

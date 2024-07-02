@@ -9,14 +9,14 @@ public class GenericService<T> : IGenericService<T> where T : class
 {
     public GenericService(IUnitOfWork uow, IClaimService claimService, ITimeService timeService)
     {
-        _uow = uow;
-        _claimService = claimService;
-        _timeService = timeService;
+        this.uow = uow;
+        this.claimService = claimService;
+        this.timeService = timeService;
     }
 
-    protected readonly IUnitOfWork _uow;
-    protected readonly IClaimService _claimService;
-    protected readonly ITimeService _timeService;
+    protected readonly IUnitOfWork uow;
+    protected readonly IClaimService claimService;
+    protected readonly ITimeService timeService;
 
     // public async Task<T?> GetByIdAsync(int id)
     // {

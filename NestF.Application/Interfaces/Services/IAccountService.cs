@@ -13,4 +13,5 @@ public interface IAccountService : IGenericService<Account>
     Task<CustomerBasicInfo> GetCustomerDetailAsync(int id);
     Task<StaffBasicInfo> GetStaffDetailAsync(int id);
     Task<CustomerBasicInfo> RegisterCustomerAsync(CustomerRegister model);
+    Task<AuthToken> AuthorizeStaffAsync(StaffAuthorize model);
 }

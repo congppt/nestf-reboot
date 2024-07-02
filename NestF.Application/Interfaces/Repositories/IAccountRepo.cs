@@ -11,4 +11,5 @@ public interface IAccountRepo : IGenericRepo<Account>
     Task<Account?> GetCustomerByIdAsync(int id, CancellationToken ct = default);
     Task<Account?> GetStaffByIdAsync(int id, CancellationToken ct = default);
     Task<Account?> GetCustomerByPhoneAsync(string phone, CancellationToken ct = default);
+    Task<Account?> GetStaffByEmailAsync(string email, CancellationToken ct = default);
 }

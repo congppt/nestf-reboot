@@ -22,4 +22,11 @@ public class OrderController : Controller
         var page = await _orderService.GetOrderPageAsync(pageIndex, pageSize, status);
         return Ok(page);
     }
+
+    [HttpGet("cart")]
+    public async Task<IActionResult> GetCartPageAsync(int pageIndex = 0, int pageSize = 10)
+    {
+        var cart = await _orderService.GetCartPageAsync(pageIndex, pageSize);
+        return Ok(cart);
+    }
 }

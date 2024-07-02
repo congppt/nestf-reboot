@@ -92,6 +92,7 @@ public static class DepsInject
             services.AddScoped<IProductRepo, ProductRepo>();
             services.AddScoped<ICategoryRepo, CategoryRepo>();
             services.AddScoped<IOrderRepo, OrderRepo>();
+            services.AddScoped<IOrderDetailRepo, OrderDetailRepo>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
             services.AddScoped<IBackgroundService, QuartzBackgroundService>();
