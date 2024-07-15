@@ -8,7 +8,7 @@ public interface IProductService : IGenericService<Product>
 {
     Task<Page<ProductBasicInfo>> GetProductPageAsync(int pageIndex, int pageSize);
     Task<string> GetPreSignedUrlAsync(int productId);
-    Task<ProductBasicInfo> CreateProductAsync();
+    Task<ProductBasicInfo> CreateProductAsync(ProductCreate model);
     Task<ProductBasicInfo> UpdateProductAsync(int productId, ProductUpdate model);
     Task AddProductImageAsync(int id, string imagePath);
     Task<ProductDetailInfo> GetProductDetailAsync(int id);

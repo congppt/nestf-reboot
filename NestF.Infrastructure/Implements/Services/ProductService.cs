@@ -60,21 +60,13 @@ public class ProductService : GenericService<Product>, IProductService
         return url;
     }
 
-    public async Task<ProductBasicInfo> CreateProductAsync()
+    public async Task<ProductBasicInfo> CreateProductAsync(ProductCreate model)
     {
-        var product = new Product
-        {
-            Name = DefaultConstants.PRODUCT_NAME,
-            Description = string.Empty,
-            Price = 0,
-            Status = ProductStatus.Temp,
-            ImgPaths = [],
-            CategoryId = 1
-        };
+        var product = model.Adapt<Product>();
+        product.Status = ProductStatus.Hidden;
+        product.ImgPaths = [];
         await uow.ProductRepo.AddAsync(product);
         if (!await uow.SaveChangesAsync()) throw new DbUpdateException();
-        await _bgService.ScheduleDeleteTempProductJobAsync(product.Id,
-            timeService.Now.AddMinutes(DefaultConstants.ACCESS_TOKEN_MINUTE));
         return product.Adapt<ProductBasicInfo>();
     }
 

@@ -34,24 +34,4 @@ public class QuartzBackgroundService : IBackgroundService
         // Schedule the job with the trigger
         await _scheduler.ScheduleJob(jobDetail, trigger);
     }
-
-    public async Task ScheduleDeleteTempProductJobAsync(int productId, DateTime fireAt)
-    {
-        var key = $"{nameof(DeleteTempProductJob)}_{productId}";
-        var jobKey = new JobKey(key,BackgroundConstants.PRODUCT_GRP);
-        var triggerKey = new TriggerKey(key, BackgroundConstants.PRODUCT_GRP);
-        var jobDetail = JobBuilder.Create<DeleteTempProductJob>()
-            .WithIdentity(jobKey)
-            .UsingJobData(BackgroundConstants.PRODUCT_ID_KEY, productId)
-            .RequestRecovery()
-            .PersistJobDataAfterExecution()
-            .Build();
-        // Define the trigger
-        var trigger = TriggerBuilder.Create()
-            .WithIdentity(triggerKey)
-            .StartAt(fireAt)
-            .Build();
-        // Schedule the job with the trigger
-        await _scheduler.ScheduleJob(jobDetail, trigger);
-    }
 }

@@ -25,18 +25,18 @@ public class ProductController : Controller
         var page = await _productService.GetProductPageAsync(pageIndex, pageSize);
         return Ok(page);
     }
-    [HttpPost("{id}/image-upload")]
+    [HttpGet("{id}/image-upload")]
     [Authorize(Roles = $"{nameof(Role.Staff)}")]
     public async Task<IActionResult> GetProductPreSignedUrlAsync(int id)
     {
         return Ok(await _productService.GetPreSignedUrlAsync(id));
     }
 
-    [HttpGet("new")]
+    [HttpPost]
     [Authorize(Roles = $"{nameof(Role.Staff)}")]
-    public async Task<IActionResult> CreateProductAsync()
+    public async Task<IActionResult> CreateProductAsync([FromBody] ProductCreate model)
     {
-        var product = await _productService.CreateProductAsync();
+        var product = await _productService.CreateProductAsync(model);
         return Created($"product/{product.Id}", product);
     }
 
