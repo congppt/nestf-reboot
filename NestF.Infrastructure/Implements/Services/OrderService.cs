@@ -54,4 +54,30 @@ public class OrderService : GenericService<Order>, IOrderService
             PageSize = pageSize
         };
     }
+
+    public async Task AddToCartAsync(CartAdd model)
+    {
+        var product = await uow.ProductRepo.GetByIdAsync(model.ProductId) ?? throw new KeyNotFoundException();
+        if (product.Status == ProductStatus.Hidden) throw new ArgumentException();
+        if (product.Stock < model.Quantity) throw new ArgumentException();
+        var accountId = claimService.GetClaim(ClaimConstants.ID, -1);
+        var detail = model.Adapt<OrderDetail>();
+        var cart = await uow.OrderRepo.GetCartAsync(accountId);
+        if (cart == null)
+        {
+            cart = new()
+            {
+                AccountId = accountId,
+                Status = OrderStatus.Shopping,
+                Details = [detail]
+            };
+            await uow.OrderRepo.AddAsync(cart);
+        }
+        else
+        {
+            detail.OrderId = cart.Id;
+            await uow.OrderDetailRepo.AddAsync(detail);
+        }
+        await uow.SaveChangesAsync();
+    }
 }

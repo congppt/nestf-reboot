@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="postgres@dpg-cqaj4k5ds78s739tgq7g-a.singapore-postgres.render.com" uuid="3af8fec6-5fb7-4998-8709-4c136f3fe44e">
+    <data-source source="LOCAL" name="nestf_le68@dpg-cqaj4k5ds78s739tgq7g-a.singapore-postgres.render.com" uuid="3af8fec6-5fb7-4998-8709-4c136f3fe44e">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://dpg-cqaj4k5ds78s739tgq7g-a.singapore-postgres.render.com:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://dpg-cqaj4k5ds78s739tgq7g-a.singapore-postgres.render.com:5432/nestf_le68</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

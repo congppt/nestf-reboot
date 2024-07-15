@@ -26,4 +26,10 @@ public class OrderRepo : GenericRepo<Order>, IOrderRepo
         return source;
     }
 
+    public async Task<Order?> GetCartAsync(int accountId)
+    {
+        var cart = await context.Orders.AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(o => o.AccountId == accountId && o.Status == OrderStatus.Shopping);
+        return cart;
+    }
 }
