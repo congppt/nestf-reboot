@@ -90,8 +90,10 @@ public class AccountService : GenericService<Account>, IAccountService
     {
         var role = claimService.GetClaim(ClaimConstants.ROLE, Role.Guest);
         if (role != Role.Guest) throw new ArgumentException();
+        var phone = claimService.GetClaim(ClaimConstants.PHONE, string.Empty);
+        if (await uow.AccountRepo.GetCustomerByPhoneAsync(phone) != null) throw new ArgumentException();
         var customer = model.Adapt<Account>();
-        customer.Phone = claimService.GetClaim(ClaimConstants.PHONE, string.Empty);
+        customer.Phone = phone;
         customer.IsActive = true;
         customer.Role = Role.Customer;
         customer.CreatedAt = timeService.Now;

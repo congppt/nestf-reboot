@@ -80,7 +80,8 @@ public class FirebaseTokenHandler : AuthenticationHandler<AuthenticationSchemeOp
     {
         var usableClaim = new List<Claim>
         {
-            new Claim(ClaimConstants.PHONE, claims[ClaimConstants.PHONE].ToString()!)
+            new Claim(ClaimConstants.PHONE, claims[ClaimConstants.PHONE].ToString()!),
+            new Claim(ClaimConstants.FIRE_UID, claims[ClaimConstants.FIRE_UID].ToString()!)
         };
         var customClaims = new[]
             { ClaimTypes.Role, ClaimConstants.ID };

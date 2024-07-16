@@ -11,7 +11,7 @@ public class Order
     public OrderStatus Status { get; set; }
     public List<OrderTrace> Traces { get; set; } 
     public decimal Total { get; set; }
-    public HashSet<OrderDetail> Details { get; set; }
+    public List<OrderDetail> Details { get; set; }
     public HashSet<Transaction> Transactions { get; set; }
 }
 
