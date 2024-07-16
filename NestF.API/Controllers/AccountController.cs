@@ -67,7 +67,7 @@ public class AccountController : Controller
     }
 
     [HttpPost("customer")]
-    [Authorize(Roles = $"{nameof(Role.Guest)}")]
+    [Authorize]
     public async Task<IActionResult> RegisterCustomerAsync([FromBody] CustomerRegister model)
     {
         var customer = await _accountService.RegisterCustomerAsync(model);

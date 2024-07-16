@@ -1,4 +1,7 @@
-﻿using Mapster;
+﻿using System.Collections.ObjectModel;
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NestF.Application.DTOs.Account;
@@ -16,12 +19,14 @@ public class AccountService : GenericService<Account>, IAccountService
 {
     private readonly IBackgroundService _bgService;
     private readonly IConfiguration _config;
+    private readonly FirebaseAuth _fbAuth;
     public AccountService(IUnitOfWork uow, IClaimService claimService, ITimeService timeService,
-        IBackgroundService bgService, IConfiguration config) : base(uow,
+        IBackgroundService bgService, IConfiguration config, FirebaseApp firebase) : base(uow,
         claimService, timeService)
     {
         _bgService = bgService;
         _config = config;
+        _fbAuth = FirebaseAuth.GetAuth(firebase);
     }
 
     public async Task<Page<CustomerBasicInfo>> GetCustomerPageAsync(int pageIndex, int pageSize)
@@ -83,6 +88,8 @@ public class AccountService : GenericService<Account>, IAccountService
 
     public async Task<CustomerBasicInfo> RegisterCustomerAsync(CustomerRegister model)
     {
+        var role = claimService.GetClaim(ClaimConstants.ROLE, Role.Guest);
+        if (role != Role.Guest) throw new ArgumentException();
         var customer = model.Adapt<Account>();
         customer.Phone = claimService.GetClaim(ClaimConstants.PHONE, string.Empty);
         customer.IsActive = true;
@@ -90,6 +97,13 @@ public class AccountService : GenericService<Account>, IAccountService
         customer.CreatedAt = timeService.Now;
         await uow.AccountRepo.AddAsync(customer);
         if (!await uow.SaveChangesAsync()) throw new DbUpdateException();
+        Dictionary<string, object> claims = new()
+        {
+            [ClaimConstants.ROLE] = Role.Customer.ToString(),
+            [ClaimConstants.ID] = customer.Id
+        };
+        var uid = claimService.GetClaim(ClaimConstants.FIRE_UID, string.Empty);
+        await _fbAuth.SetCustomUserClaimsAsync(uid, new ReadOnlyDictionary<string, object>(claims));
         return customer.Adapt<CustomerBasicInfo>();
     }
 
