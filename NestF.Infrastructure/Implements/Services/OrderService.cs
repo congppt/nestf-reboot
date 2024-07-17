@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NestF.Application.DTOs.Generic;
 using NestF.Application.DTOs.Order;
 using NestF.Application.Interfaces.Repositories;
@@ -53,5 +54,40 @@ public class OrderService : GenericService<Order>, IOrderService
             PageIndex = pageIndex,
             PageSize = pageSize
         };
+    }
+
+    public async Task AddToCartAsync(CartAdd model)
+    {
+        var product = await uow.ProductRepo.GetByIdAsync(model.ProductId) ?? throw new KeyNotFoundException();
+        if (product.Status == ProductStatus.Hidden) throw new ArgumentException();
+        if (product.Stock < model.Quantity) throw new ArgumentException();
+        var accountId = claimService.GetClaim(ClaimConstants.ID, -1);
+        var detail = model.Adapt<OrderDetail>();
+        var cart = await uow.OrderRepo.GetCartAsync(accountId, model.ProductId);
+        if (cart == null)
+        {
+            cart = new()
+            {
+                AccountId = accountId,
+                Status = OrderStatus.Shopping,
+                Details = [detail]
+            };
+            await uow.OrderRepo.AddAsync(cart);
+        }
+        else
+        {
+            if (!cart.Details.IsNullOrEmpty())
+            {
+                cart.Details[0].Quantity += model.Quantity;
+                if (cart.Details[0].Quantity > product.Stock) throw new ArgumentException();
+                uow.OrderDetailRepo.Update(cart.Details[0]);
+            }
+            else
+            {
+                detail.OrderId = cart.Id;
+                await uow.OrderDetailRepo.AddAsync(detail);
+            }
+        }
+        await uow.SaveChangesAsync();
     }
 }

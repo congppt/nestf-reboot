@@ -9,4 +9,5 @@ public interface IOrderService : IGenericService<Order>
 {
     Task<Page<OrderBasicInfo>> GetOrderPageAsync(int pageIndex, int pageSize, OrderStatus? status);
     Task<Page<OrderDetailBasicInfo>> GetCartPageAsync(int pageIndex, int pageSize);
+    Task AddToCartAsync(CartAdd model);
 }
